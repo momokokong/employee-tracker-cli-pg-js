@@ -80,6 +80,37 @@ async function collectNewEmployee(db) {
   return newRole;
 }
 
+async function updateEmployeeRole(db) {
+  const roles = await db.getRole();
+  const employees = await db.getEmployee();
+  const updatingEmployee = await inquire.prompt([
+    {
+      type: 'list',
+      message: "Who has a new role?\n",
+      name: "employee",
+      choices: employees
+    },
+    {
+      type: 'list',
+      message: "What's the new role?\n",
+      name: "role",
+      choices: roles
+    },
+    {
+      type: 'input',
+      message: "First name of the new employee?\n",
+      name: "firstName"
+    },
+    {
+      type: 'input',
+      message: "Last name of the new employee?\n",
+      name: "lastName"
+    },
+  ]);
+  console.log(newRole);
+  return newRole;
+}
+
 async function start(db) {
   while (true) { 
     const what = await inquire.prompt([
@@ -114,7 +145,7 @@ async function start(db) {
         await db.addEmployee(newEmployee);
         break;
       case "Update an employee role":
-
+        await updateEmployeeRole();
         break;
       case "Buh-bye!":
         return;

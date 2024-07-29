@@ -112,6 +112,37 @@ class DB {
       console.log(err);
     }
   }
+
+  async addEmployee(newEmployee) {
+    const {firstName, lastName, role, manager} = newEmployee;
+    try {
+      switch (manager) {
+        case "None":
+          await this.pool.query(`
+            INSERT INTO employee (first_name, last_name, role_id) 
+            VALUES ($1, $2, (SELECT id FROM role WHERE title = $3))`,
+            [firstName, lastName, role]);
+          break;
+        default:
+          const managerName = manager.split(" ");
+          const managerID = (await this.pool.query(`
+            SELECT id from employee 
+            WHERE first_name = $1 AND last_name = $2`, 
+            [...managerName])).rows[0].id;
+          await this.pool.query(`
+            INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+            VALUES ($1, $2, (SELECT id FROM role WHERE title = $3), $4)`,
+            [firstName, lastName, role, managerID]);
+          break;
+      }
+      console.log("\nAdded Employee " + firstName + " " + lastName + ".");
+      const { rows } = await this.pool.query("SELECT * from Employee");
+      printTable(rows);
+      console.log("\n");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 module.exports = DB;
