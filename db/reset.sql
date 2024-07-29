@@ -36,14 +36,14 @@ VALUES
 
 INSERT INTO role (title, salary, department_id)
 VALUES
-    ('Software Engineer', 95000.00, (SELECT id FROM department WHERE name = 'Engineering')),
-    ('Frontend Developer', 85000.00, (SELECT id FROM department WHERE name = 'Engineering')),
-    ('Database Administrator', 100000.00, (SELECT id FROM department WHERE name = 'Engineering')),
-    ('Marketing Manager', 75000.00, (SELECT id FROM department WHERE name = 'Marketing')),
-    ('Marketing Analyst', 60000.00, (SELECT id FROM department WHERE name = 'Marketing')),
-    ('Sales Manager', 80000.00, (SELECT id FROM department WHERE name = 'Sales')),
-    ('Sales Representative', 65000.00, (SELECT id FROM department WHERE name = 'Sales')),
-    ('Sales Associate', 55000.00, (SELECT id FROM department WHERE name = 'Sales'));
+    ('Software Engineer', '95000', (SELECT id FROM department WHERE name = 'Engineering')),
+    ('Frontend Developer', '85000', (SELECT id FROM department WHERE name = 'Engineering')),
+    ('Database Administrator', '100000', (SELECT id FROM department WHERE name = 'Engineering')),
+    ('Marketing Manager', '75000', (SELECT id FROM department WHERE name = 'Marketing')),
+    ('Marketing Analyst', '60000', (SELECT id FROM department WHERE name = 'Marketing')),
+    ('Sales Manager', '80000', (SELECT id FROM department WHERE name = 'Sales')),
+    ('Sales Representative', '65000', (SELECT id FROM department WHERE name = 'Sales')),
+    ('Sales Associate', '55000', (SELECT id FROM department WHERE name = 'Sales'));
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
