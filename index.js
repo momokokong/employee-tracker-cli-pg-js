@@ -1,13 +1,11 @@
-// index.js
-// This file is the starting point of the SVG generator which prepares the required modules, 
 
-// init the modules as global variables
 const figlet = require("figlet");
 const cli = require("./helpers/prompt")
+const DB = require("./helpers/query");
 
 function printWelcomeScreen() {
   console.log(
-    figlet.textSync("Employee Tracker <========>", {
+    figlet.textSync("Employee Tracker ========>", {
       horizontalLayout: "full",
       verticalLayout: "default",
       width: 80,
@@ -18,7 +16,7 @@ function printWelcomeScreen() {
 
 function printEndingScreen() {
   console.log(
-    figlet.textSync("<========> Employee Tracker", {
+    figlet.textSync("<======== Employee Tracker", {
       horizontalLayout: "full",
       verticalLayout: "default",
       width: 80,
@@ -27,15 +25,14 @@ function printEndingScreen() {
   );
 }
 
-// function init()
-// Prep the user and initiate the generator
-function init() {
-
+async function init() {
+  const db = new DB();
   printWelcomeScreen();
-  cli.start();
-  // printEndingScreen();
+  await cli.start(db);
+  printEndingScreen();
+  db.end();  
+
 
 }
 
-// Function call to initialize app
 init();
