@@ -143,6 +143,30 @@ class DB {
       console.log(err);
     }
   }
+
+  async updateEmployeeRole(chosenOne) {
+    const {name, role} = chosenOne;
+    const fullName = name.split(" ");
+
+    try {
+      const roleID = (await this.pool.query(`
+        SELECT id from role 
+        WHERE title = $1`, 
+        [role])).rows[0].id;
+      await this.pool.query(`
+        UPDATE employee 
+        SET role_id = $1
+        WHERE first_name = $2 AND last_name = $3`,
+        [roleID, ...fullName]);
+      console.log("\nUpdated Employee " + name + "with a new role " + role + ".");
+      const { rows } = await this.pool.query("SELECT * from Employee");
+      printTable(rows);
+      console.log("\n");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 }
 
 module.exports = DB;

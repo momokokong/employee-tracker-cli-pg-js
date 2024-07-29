@@ -52,7 +52,7 @@ async function collectNewRole(db) {
 async function collectNewEmployee(db) {
   const roles = await db.getRole();
   const managers = await db.getEmployee();
-  const newRole = await inquire.prompt([
+  const newEmployee = await inquire.prompt([
     {
       type: 'input',
       message: "First name of the new employee?\n",
@@ -76,18 +76,18 @@ async function collectNewEmployee(db) {
       choices: managers
     }
   ]);
-  console.log(newRole);
-  return newRole;
+  console.log(newEmployee);
+  return newEmployee;
 }
 
-async function updateEmployeeRole(db) {
+async function pickEmployeeRole(db) {
   const roles = await db.getRole();
   const employees = await db.getEmployee();
-  const updatingEmployee = await inquire.prompt([
+  const chosenOne = await inquire.prompt([
     {
       type: 'list',
       message: "Who has a new role?\n",
-      name: "employee",
+      name: "name",
       choices: employees
     },
     {
@@ -95,20 +95,10 @@ async function updateEmployeeRole(db) {
       message: "What's the new role?\n",
       name: "role",
       choices: roles
-    },
-    {
-      type: 'input',
-      message: "First name of the new employee?\n",
-      name: "firstName"
-    },
-    {
-      type: 'input',
-      message: "Last name of the new employee?\n",
-      name: "lastName"
-    },
+    }
   ]);
-  console.log(newRole);
-  return newRole;
+  console.log(chosenOne);
+  return chosenOne;
 }
 
 async function start(db) {
@@ -145,7 +135,8 @@ async function start(db) {
         await db.addEmployee(newEmployee);
         break;
       case "Update an employee role":
-        await updateEmployeeRole();
+        const chosenOne = await pickEmployeeRole(db);
+        await db.updateEmployeeRole(chosenOne);
         break;
       case "Buh-bye!":
         return;
