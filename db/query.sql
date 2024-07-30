@@ -34,3 +34,15 @@
 --   employee ON role.id = employee.role_id
 -- ORDER BY
 --   department.id ASC;
+
+-- show employees by manager
+SELECT 
+  employee.id,
+  CONCAT(employee.first_name, ' ', employee.last_name) AS manager,
+  CONCAT(e.first_name, ' ', e.last_name) AS employee
+FROM 
+  employee
+JOIN 
+  employee e ON employee.id = e.manager_id
+ORDER BY
+  employee.id ASC;

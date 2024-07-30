@@ -91,6 +91,26 @@ class DB {
     }
   }
 
+  async showEmployeeByManager() {
+    try {
+      const { rows } = await this.pool.query(`
+        SELECT 
+          employee.id,
+          CONCAT(employee.first_name, ' ', employee.last_name) AS manager,
+          CONCAT(e.first_name, ' ', e.last_name) AS employee
+        FROM 
+          employee
+        JOIN 
+          employee e ON employee.id = e.manager_id
+        ORDER BY
+          employee.id ASC`);
+      printTable(rows);
+      console.log("\n");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async showAllRoles() {
     try {
       const { rows } = await this.pool.query(`

@@ -11,6 +11,7 @@ const menu = [
   "Add a role",
   "Add an employee",
   "Update an employee role",
+  "View employees by manager",
   "View employees by department",
   "Buh-bye!"
 ]
@@ -138,6 +139,9 @@ async function start(db) {
       case "Update an employee role":
         const chosenOne = await pickEmployeeRole(db);
         await db.updateEmployeeRole(chosenOne);
+        break;
+      case "View employees by manager":
+        await db.showEmployeeByManager();
         break;
       case "View employees by department":
         await db.showEmployeeByDept();
