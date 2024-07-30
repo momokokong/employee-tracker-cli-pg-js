@@ -43,7 +43,11 @@ class DB {
 
   async getEmployee() {
     try {
-      const { rows } = await this.pool.query("SELECT CONCAT(first_name, ' ', last_name) AS name FROM employee");
+      const { rows } = await this.pool.query(`
+        SELECT 
+          CONCAT(first_name, ' ', last_name) AS name 
+        FROM 
+          employee`);
       const employeeList = [];
       rows.forEach((employee) =>  employeeList.push(employee.name));
       employeeList.unshift("None");
@@ -127,7 +131,12 @@ class DB {
   async addRole(newRole) {
     const {title, salary, department} = newRole;
     try {
-      await this.pool.query(`INSERT INTO role (title, salary, department_id) VALUES ($1, $2, (SELECT id FROM department WHERE name = $3))`, [title, salary, department]);
+      await this.pool.query(`
+        INSERT INTO 
+          role (title, salary, department_id) 
+        VALUES 
+          ($1, $2, (SELECT id FROM department WHERE name = $3))`, 
+        [title, salary, department]);
       console.log("\nAdded role " + title + ".");
       const { rows } = await this.pool.query("SELECT * from role");
       printTable(rows);
@@ -143,19 +152,27 @@ class DB {
       switch (manager) {
         case "None":
           await this.pool.query(`
-            INSERT INTO employee (first_name, last_name, role_id) 
-            VALUES ($1, $2, (SELECT id FROM role WHERE title = $3))`,
+            INSERT INTO 
+              employee (first_name, last_name, role_id) 
+            VALUES 
+              ($1, $2, (SELECT id FROM role WHERE title = $3))`,
             [firstName, lastName, role]);
           break;
         default:
           const managerName = manager.split(" ");
           const managerID = (await this.pool.query(`
-            SELECT id from employee 
-            WHERE first_name = $1 AND last_name = $2`, 
+            SELECT 
+              id 
+            FROM 
+              employee 
+            WHERE 
+              first_name = $1 AND last_name = $2`, 
             [...managerName])).rows[0].id;
           await this.pool.query(`
-            INSERT INTO employee (first_name, last_name, role_id, manager_id) 
-            VALUES ($1, $2, (SELECT id FROM role WHERE title = $3), $4)`,
+            INSERT INTO 
+              employee (first_name, last_name, role_id, manager_id) 
+            VALUES 
+              ($1, $2, (SELECT id FROM role WHERE title = $3), $4)`,
             [firstName, lastName, role, managerID]);
           break;
       }
@@ -174,13 +191,20 @@ class DB {
 
     try {
       const roleID = (await this.pool.query(`
-        SELECT id from role 
-        WHERE title = $1`, 
+        SELECT 
+          id 
+        FROM 
+          role 
+        WHERE 
+          title = $1`, 
         [role])).rows[0].id;
       await this.pool.query(`
-        UPDATE employee 
-        SET role_id = $1
-        WHERE first_name = $2 AND last_name = $3`,
+        UPDATE 
+          employee 
+        SET 
+          role_id = $1
+        WHERE 
+          first_name = $2 AND last_name = $3`,
         [roleID, ...fullName]);
       console.log("\nUpdated Employee " + name + "with a new role " + role + ".");
       const { rows } = await this.pool.query("SELECT * from Employee");
