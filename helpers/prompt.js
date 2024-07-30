@@ -1,6 +1,17 @@
+/**
+ *  prompt.js
+ *  The script file handles all CLI interactions 
+ *  Required modules:
+ *    inquirer: node.js module that handles prompts
+ *    validator: node.js module that validate the input from users
+*/
 const inquire = require("inquirer");
 const validator = require("validator");
 
+/**
+ *  Global variable
+ *  menu is an array of strings that contains the hard coded questions for the top menu
+*/
 const menu = [
   "View all departments",
   "View all roles",
@@ -15,6 +26,12 @@ const menu = [
   "Buh-bye!"
 ]
 
+/**
+ *  function checkInputNumber(str)
+ *  validate the user input as numbers
+ *  @param {string} str The user input
+ *  @returns {boolean} validity of the user input
+ */
 function checkInputNumber(str) {
   if (!validator.isEmpty(str.trim()) && validator.isNumeric(str.trim())) {
     return true;
@@ -22,6 +39,12 @@ function checkInputNumber(str) {
   return "You must enter a number.  Try again.";
 }
 
+/**
+ *  function checkInputText(str)
+ *  validate the user input as Text less than 31 chars
+ *  @param {string} str The user input
+ *  @returns {boolean} validity of the user input
+ */
 function checkInputText(str) {
   if (!validator.isEmpty(str.trim()) && str.trim().length < 31) {
     return true;
@@ -29,6 +52,12 @@ function checkInputText(str) {
   return "You must enter something up to 30 characters.  Try again.";
 }
 
+/**
+ *  function checkInputName(str)
+ *  validate the user input as Text less than 31 chars
+ *  @param {string} str The user input
+ *  @returns {boolean} validity of the user input
+ */
 function checkInputName(str) {
   if (!validator.contains(str.trim(), [" "])) {
     return true;
@@ -36,6 +65,11 @@ function checkInputName(str) {
   return "You must enter a name that does not contain a space.  Try again.";
 }
 
+/**
+ *  async function collectNewDept()
+ *  prompt the user and collect the name of the new departmemnt
+ *  @returns {string} the name of the new department
+ */
 async function collectNewDept() {
   const newDept = await inquire.prompt([
     {
@@ -48,8 +82,16 @@ async function collectNewDept() {
   return newDept.name;
 }
 
+/**
+ *  async function collectNewRole(db)
+ *  prompt the user and collect the info of the new role
+ *  @param {object} db The database instance used by this proejct
+ *  @returns {object} contains role info collected from the user { title, salary, department }
+ */
 async function collectNewRole(db) {
+  // get a list of current departments from the DB
   const departments = await db.getDept();
+
   const newRole = await inquire.prompt([
     {
       type: 'input',
@@ -74,9 +116,17 @@ async function collectNewRole(db) {
   return newRole;
 }
 
+/**
+ *  async function collectNewEmployee(db)
+ *  prompt the user and collect the info of the new employee
+ *  @param {object} db The database instance used by this proejct
+ *  @returns {object} contains employee info collected from the user { firstName, lastName, role, manager }
+ */
 async function collectNewEmployee(db) {
+  // get a list of current roles and manager candidates from the DB
   const roles = await db.getRole();
   const managers = await db.getEmployee();
+
   const newEmployee = await inquire.prompt([
     {
       type: 'input',
@@ -107,9 +157,17 @@ async function collectNewEmployee(db) {
   return newEmployee;
 }
 
+/**
+ *  async function pickEmployeeRole(db)
+ *  prompt the user and collect the info of the new role for the selected employee
+ *  @param {object} db The database instance used by this proejct
+ *  @returns {object} contains role update info { name, role }
+ */
 async function pickEmployeeRole(db) {
+  // get a list of current roles and employees from the DB
   const roles = await db.getRole();
   const employees = await db.getEmployee();
+
   const chosenOne = await inquire.prompt([
     {
       type: 'list',
@@ -128,6 +186,12 @@ async function pickEmployeeRole(db) {
   return chosenOne;
 }
 
+/**
+ *  async function start(db)
+ *  prompt the user with the main menu and and trigger the chosen action
+ *  @param {object} db The database instance used by this proejct
+ *  @returns {void} when the function ends it break the loop therfore end the CLI interaction
+ */
 async function start(db) {
   while (true) { 
     const what = await inquire.prompt([
@@ -180,4 +244,5 @@ async function start(db) {
   }
 }
 
+// only expose start()
 module.exports = { start } ;

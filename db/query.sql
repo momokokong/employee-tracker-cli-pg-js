@@ -1,3 +1,5 @@
+-- contains some test queries used by this project.  
+
 -- Show all employees
 \echo 'Show all employees'
 SELECT 

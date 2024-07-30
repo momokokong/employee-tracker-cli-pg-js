@@ -1,3 +1,5 @@
+-- seeds the 3 tables - department, role and employee
+
 INSERT INTO department (name)
 VALUES
     ('Engineering'),

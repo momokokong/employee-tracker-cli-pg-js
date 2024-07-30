@@ -1,4 +1,4 @@
-
+-- initialized the hr_db schema with 3 tables - department, role and employee
 
 DROP DATABASE IF EXISTS hr_db;
 CREATE DATABASE hr_db;

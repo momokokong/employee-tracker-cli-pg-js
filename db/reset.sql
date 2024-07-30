@@ -1,4 +1,4 @@
--- use this file to reset hr_db and seed it after some manipulation.
+-- use this file to reset hr_db and seed it to get it back to the initial state
 
 \c postgres;
 
