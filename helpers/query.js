@@ -193,9 +193,7 @@ class DB {
     try {
       await this.pool.query(`INSERT INTO department (name) VALUES ($1)`, [name]);
       console.log("\nAdded department " + name + ".");
-      const { rows } = await this.pool.query("SELECT * from department");
-      printTable(rows);
-      console.log("");
+      await this.showAllDepartments();
     } catch (err) {
       console.log(err);
     }
@@ -212,9 +210,7 @@ class DB {
         [title, salary, department]
       );
       console.log("\nAdded role " + title + ".");
-      const { rows } = await this.pool.query("SELECT * from role");
-      printTable(rows);
-      console.log("");
+      await this.showAllRoles();
     } catch (err) {
       console.log(err);
     }
@@ -253,9 +249,7 @@ class DB {
           break;
       }
       console.log("\nAdded Employee " + firstName + " " + lastName + ".");
-      const { rows } = await this.pool.query("SELECT * from Employee");
-      printTable(rows);
-      console.log("");
+      await this.showAllEmployees();
     } catch (err) {
       console.log(err);
     }
@@ -284,14 +278,11 @@ class DB {
         [roleID, ...fullName]
       );
       console.log("\nUpdated Employee " + name + "with a new role " + role + ".");
-      const { rows } = await this.pool.query("SELECT * from Employee");
-      printTable(rows);
-      console.log("");
+      await this.showAllEmployees();
     } catch (err) {
       console.log(err);
     }
   }
-
 }
 
 module.exports = DB;

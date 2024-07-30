@@ -15,12 +15,34 @@ const menu = [
   "Buh-bye!"
 ]
 
+function checkInputNumber(str) {
+  if (!validator.isEmpty(str.trim()) && validator.isNumeric(str.trim())) {
+    return true;
+  }
+  return "You must enter a number.  Try again.";
+}
+
+function checkInputText(str) {
+  if (!validator.isEmpty(str.trim()) && str.trim().length < 31) {
+    return true;
+  }
+  return "You must enter something up to 30 characters.  Try again.";
+}
+
+function checkInputName(str) {
+  if (!validator.contains(str.trim(), [" "])) {
+    return true;
+  }
+  return "You must enter a name that does not contain a space.  Try again.";
+}
+
 async function collectNewDept() {
   const newDept = await inquire.prompt([
     {
       type: 'input',
       message: "What is the new department?\n",
       name: "name",
+      validate: checkInputText
     }
   ]);
   return newDept.name;
@@ -32,12 +54,14 @@ async function collectNewRole(db) {
     {
       type: 'input',
       message: "What is the title of the new role?\n",
-      name: "title"
+      name: "title",
+      validate: checkInputText
     },
     {
       type: 'input',
       message: "What is the salary of the new role?\n",
-      name: "salary"
+      name: "salary",
+      validate: checkInputNumber
     },
     {
       type: 'list',
@@ -57,12 +81,14 @@ async function collectNewEmployee(db) {
     {
       type: 'input',
       message: "First name of the new employee?\n",
-      name: "firstName"
+      name: "firstName",
+      validate: checkInputName
     },
     {
       type: 'input',
       message: "Last name of the new employee?\n",
-      name: "lastName"
+      name: "lastName",
+      validate: checkInputName
     },
     {
       type: 'list',
@@ -152,8 +178,6 @@ async function start(db) {
         return;
     }
   }
-
 }
-
 
 module.exports = { start } ;

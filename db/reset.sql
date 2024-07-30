@@ -1,3 +1,5 @@
+-- use this file to reset hr_db and seed it after some manipulation.
+
 \c postgres;
 
 DROP DATABASE IF EXISTS hr_db;
@@ -33,6 +35,7 @@ VALUES
     ('Engineering'),
     ('Marketing'),
     ('Warehouse'),
+    ('CEO'),
     ('Sales');
 
 INSERT INTO role (title, salary, department_id)
@@ -42,6 +45,7 @@ VALUES
     ('Database Administrator', '100000', (SELECT id FROM department WHERE name = 'Engineering')),
     ('Marketing Manager', '75000', (SELECT id FROM department WHERE name = 'Marketing')),
     ('Marketing Analyst', '60000', (SELECT id FROM department WHERE name = 'Marketing')),
+    ('CEO', '300000', (SELECT id FROM department WHERE name = 'CEO')),
     ('Sales Manager', '80000', (SELECT id FROM department WHERE name = 'Sales')),
     ('Sales Representative', '65000', (SELECT id FROM department WHERE name = 'Sales')),
     ('Sales Associate', '55000', (SELECT id FROM department WHERE name = 'Sales'));
