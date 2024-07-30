@@ -69,6 +69,28 @@ class DB {
     }
   }
 
+  async showEmployeeByDept() {
+    try {
+      const { rows } = await this.pool.query(`
+        SELECT 
+          department.id,
+          name AS department,
+          CONCAT(employee.first_name, ' ', employee.last_name) AS employee
+        FROM 
+          department
+        LEFT JOIN 
+          role ON department.id = role.department_id
+        LEFT JOIN 
+          employee ON role.id = employee.role_id
+        ORDER BY
+          department.id ASC`);
+      printTable(rows);
+      console.log("\n");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async showAllRoles() {
     try {
       const { rows } = await this.pool.query(`

@@ -3,7 +3,7 @@ const validator = require("validator");
 
 
 
-const topList = [
+const menu = [
   "View all departments",
   "View all roles",
   "View all employees",
@@ -11,6 +11,7 @@ const topList = [
   "Add a role",
   "Add an employee",
   "Update an employee role",
+  "View employees by department",
   "Buh-bye!"
 ]
 
@@ -108,7 +109,7 @@ async function start(db) {
         type: 'list',
         message: "What do you want to do?\n",
         name: "todo",
-        choices: topList
+        choices: menu
       }
     ]);
 
@@ -137,6 +138,9 @@ async function start(db) {
       case "Update an employee role":
         const chosenOne = await pickEmployeeRole(db);
         await db.updateEmployeeRole(chosenOne);
+        break;
+      case "View employees by department":
+        await db.showEmployeeByDept();
         break;
       case "Buh-bye!":
         return;
