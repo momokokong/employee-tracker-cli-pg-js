@@ -23,7 +23,7 @@ This is to setup an Employee Tracker CLI tool that interacts with a Postgres dat
 1. Clone the repo: https://github.com/momokokong/employee-tracker-cli-pg-js
 2. In the terminal, move to where the cloned local repo is.
 3. `npm install`
-   - If it does not automatically install the required module, follow below instructions:
+   - If it does not automatically install the required modules, follow the below instructions:
      - `npm i console-table-printer@2.12.1`
      - `npm i figlet@1.7.0`
      - `npm i inquirer@8.2.4`
@@ -60,7 +60,7 @@ This project adopts WTFPL license practices. Check the website for license detai
 ![starting](./screenshot/starting.png)
 - Showing view all employees
 ![view-all-options](./screenshot/view-all-options.png)
-- Showing view utilized budget by department
+- Showing view utilized budget by department<br>
 ![view-budget](./screenshot/view-budget.png)
 - Add an employee  
 ![add-an-employee](./screenshot/add-an-employee.png)
