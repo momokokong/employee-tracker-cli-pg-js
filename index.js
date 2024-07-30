@@ -31,8 +31,6 @@ async function init() {
   await cli.start(db);
   printEndingScreen();
   db.end();  
-
-
 }
 
 init();

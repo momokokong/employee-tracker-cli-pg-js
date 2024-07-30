@@ -57,7 +57,6 @@ class DB {
   async showAllDepartments() {
     try {
       const { rows } = await this.pool.query("SELECT * FROM department");
-      console.log(rows);
       console.log("\n");
       printTable(rows);
       console.log("\n");
@@ -68,7 +67,16 @@ class DB {
 
   async showAllRoles() {
     try {
-      const { rows } = await this.pool.query("SELECT * FROM role");
+      const { rows } = await this.pool.query(`
+        SELECT 
+          role.id AS id,
+          title,
+          name AS department,
+          salary
+        FROM 
+          role
+        JOIN 
+          department ON role.department_id = department.id`);
       console.log("\n");
       printTable(rows);
       console.log("\n");
@@ -79,7 +87,23 @@ class DB {
 
   async showAllEmployees() {
     try {
-      const { rows } = await this.pool.query("SELECT * FROM employee");
+      const { rows } = await this.pool.query(`
+        SELECT 
+          employee.id,
+          employee.first_name,
+          employee.last_name,
+          title,
+          name AS department,
+          salary,
+          CONCAT(m.first_name, ' ', m.last_name) AS manager
+        FROM 
+          employee
+        JOIN 
+          role ON employee.role_id = role.id
+        JOIN 
+          department ON role.department_id = department.id
+        LEFT JOIN 
+          employee m ON employee.manager_id = m.id`);
       console.log("\n");
       printTable(rows);
       console.log("\n");
