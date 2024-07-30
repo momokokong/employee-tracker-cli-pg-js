@@ -51,7 +51,7 @@ class DB {
       const employeeList = [];
       rows.forEach((employee) =>  employeeList.push(employee.name));
       employeeList.unshift("None");
-      console.log(employeeList);
+      // console.log(employeeList);
       return employeeList;
     } catch (err) {
       console.log(err);
@@ -61,9 +61,9 @@ class DB {
   async showAllDepartments() {
     try {
       const { rows } = await this.pool.query("SELECT * FROM department");
-      console.log("\n");
+      console.log("");
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -83,9 +83,10 @@ class DB {
         LEFT JOIN 
           employee ON role.id = employee.role_id
         ORDER BY
-          department.id ASC`);
+          department.id ASC`
+      );
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -103,9 +104,37 @@ class DB {
         JOIN 
           employee e ON employee.id = e.manager_id
         ORDER BY
-          employee.id ASC`);
+          employee.id ASC`
+      );
       printTable(rows);
-      console.log("\n");
+      console.log("");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async showUtilizedBudgetByDept() {
+    try {
+      const { rows } = await this.pool.query(`
+        SELECT 
+          department.id,
+          name AS department,
+          SUM(salary) AS "utilized budget",
+          COUNT(employee.id) AS "Employees"
+        FROM 
+          department
+        LEFT JOIN 
+          role ON department.id = role.department_id
+        JOIN 
+          employee ON role.id = employee.role_id
+        GROUP BY
+          department.id
+        ORDER BY
+          department.id ASC`
+      );
+      console.log("");
+      printTable(rows);
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -122,10 +151,11 @@ class DB {
         FROM 
           role
         JOIN 
-          department ON role.department_id = department.id`);
-      console.log("\n");
+          department ON role.department_id = department.id`
+      );
+      console.log("");
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -149,10 +179,11 @@ class DB {
         JOIN 
           department ON role.department_id = department.id
         LEFT JOIN 
-          employee m ON employee.manager_id = m.id`);
-      console.log("\n");
+          employee m ON employee.manager_id = m.id`
+      );
+      console.log("");
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -164,7 +195,7 @@ class DB {
       console.log("\nAdded department " + name + ".");
       const { rows } = await this.pool.query("SELECT * from department");
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -178,11 +209,12 @@ class DB {
           role (title, salary, department_id) 
         VALUES 
           ($1, $2, (SELECT id FROM department WHERE name = $3))`, 
-        [title, salary, department]);
+        [title, salary, department]
+      );
       console.log("\nAdded role " + title + ".");
       const { rows } = await this.pool.query("SELECT * from role");
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -198,7 +230,8 @@ class DB {
               employee (first_name, last_name, role_id) 
             VALUES 
               ($1, $2, (SELECT id FROM role WHERE title = $3))`,
-            [firstName, lastName, role]);
+            [firstName, lastName, role]
+          );
           break;
         default:
           const managerName = manager.split(" ");
@@ -215,13 +248,14 @@ class DB {
               employee (first_name, last_name, role_id, manager_id) 
             VALUES 
               ($1, $2, (SELECT id FROM role WHERE title = $3), $4)`,
-            [firstName, lastName, role, managerID]);
+            [firstName, lastName, role, managerID]
+          );
           break;
       }
       console.log("\nAdded Employee " + firstName + " " + lastName + ".");
       const { rows } = await this.pool.query("SELECT * from Employee");
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }
@@ -247,11 +281,12 @@ class DB {
           role_id = $1
         WHERE 
           first_name = $2 AND last_name = $3`,
-        [roleID, ...fullName]);
+        [roleID, ...fullName]
+      );
       console.log("\nUpdated Employee " + name + "with a new role " + role + ".");
       const { rows } = await this.pool.query("SELECT * from Employee");
       printTable(rows);
-      console.log("\n");
+      console.log("");
     } catch (err) {
       console.log(err);
     }

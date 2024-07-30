@@ -35,14 +35,31 @@
 -- ORDER BY
 --   department.id ASC;
 
--- show employees by manager
+-- -- show employees by manager
+-- SELECT 
+--   employee.id,
+--   CONCAT(employee.first_name, ' ', employee.last_name) AS manager,
+--   CONCAT(e.first_name, ' ', e.last_name) AS employee
+-- FROM 
+--   employee
+-- JOIN 
+--   employee e ON employee.id = e.manager_id
+-- ORDER BY
+--   employee.id ASC;
+
+-- show utilized budget by department
 SELECT 
-  employee.id,
-  CONCAT(employee.first_name, ' ', employee.last_name) AS manager,
-  CONCAT(e.first_name, ' ', e.last_name) AS employee
+  department.id,
+  name AS department,
+  SUM(salary) AS "utilized budget",
+  COUNT(employee.id) AS "Employees"
 FROM 
-  employee
+  department
+LEFT JOIN 
+  role ON department.id = role.department_id
 JOIN 
-  employee e ON employee.id = e.manager_id
+  employee ON role.id = employee.role_id
+GROUP BY
+  department.id
 ORDER BY
-  employee.id ASC;
+  department.id ASC;

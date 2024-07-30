@@ -1,8 +1,6 @@
 const inquire = require("inquirer");
 const validator = require("validator");
 
-
-
 const menu = [
   "View all departments",
   "View all roles",
@@ -13,6 +11,7 @@ const menu = [
   "Update an employee role",
   "View employees by manager",
   "View employees by department",
+  "View utilized budget by department",
   "Buh-bye!"
 ]
 
@@ -47,7 +46,7 @@ async function collectNewRole(db) {
       choices: departments
     }
   ]);
-  console.log(newRole);
+  // console.log(newRole);
   return newRole;
 }
 
@@ -78,7 +77,7 @@ async function collectNewEmployee(db) {
       choices: managers
     }
   ]);
-  console.log(newEmployee);
+  // console.log(newEmployee);
   return newEmployee;
 }
 
@@ -99,7 +98,7 @@ async function pickEmployeeRole(db) {
       choices: roles
     }
   ]);
-  console.log(chosenOne);
+  // console.log(chosenOne);
   return chosenOne;
 }
 
@@ -145,6 +144,9 @@ async function start(db) {
         break;
       case "View employees by department":
         await db.showEmployeeByDept();
+        break;
+      case "View utilized budget by department":
+        await db.showUtilizedBudgetByDept();
         break;
       case "Buh-bye!":
         return;
