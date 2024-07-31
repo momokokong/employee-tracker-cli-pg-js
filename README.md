@@ -30,7 +30,7 @@ This is to setup an Employee Tracker CLI tool that interacts with a Postgres dat
      - `npm i pg@8.12.0`
      - `npm i validator@13.12.0`
 4. Set up the database schema and seeds data: In the terminal go to the folder db/
-   - `psql -U postgres` you will need to enter the password for Postgres user postgres. In the Postgres bash:
+   - `psql -U postgres` you will need to enter the password for Postgres user postgres. In the Postgres shell:
      - `\i schema.sql` 
      - and then `\i seeds.sql`
      - now the test data is ready, exit by `\q`
